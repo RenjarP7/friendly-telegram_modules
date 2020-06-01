@@ -71,7 +71,7 @@ class TranslateMod(loader.Module):
         translated = ""
         for sentence in sentences:
             sentence = sentence.replace("'","")
-			sentence = sentence.replace("\n","")
+            sentence = sentence.replace("\n","")
             part = (r.text.split(sentence)[0]).split('["')
             translated = translated + (part[len(part)-1])[:-4] + " "
         ret = self.strings("translated", message).format(from_lang=utils.escape_html(args[0]), to_lang=utils.escape_html(args[1]), output=utils.escape_html(translated))
