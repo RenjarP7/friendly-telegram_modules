@@ -26,11 +26,11 @@ logger = logging.getLogger(__name__)
 class SendMsgMod(loader.Module):
     """Executes a send message to a Telegram ID"""
     strings = {"name": "SendMsg",
-               "need_id_msg": "<b>Need Chat ID and Message.</b>",
+               "need_id_msg": "<b>Need Chat ID / Phone number and Message.</b>",
                "need_msg": "<b>Need Message.</b>"}
 
     async def sendcmd(self, message):
-        """.send <id> <message>"""
+        """.send <id> <message>\n.send @yourusername hello\n.send +xxxxxxxxxxxx hello"""
         use_reply = False
         args = utils.get_args(message)
         if len(args) == 0:
