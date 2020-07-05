@@ -33,8 +33,6 @@ class SendMsgMod(loader.Module):
         """.send <id> <message>"""
         use_reply = False
         args = utils.get_args(message)
-        logger.debug(args)
-        logger.debug(args[0])
         if len(args) == 0:
             await utils.answer(message, self.strings("need_id_msg", message))
             return
