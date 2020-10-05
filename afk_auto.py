@@ -29,16 +29,18 @@ class AFKMod(loader.Module):
     strings = {"name": "AFK_AUTO",
                "gone": "<b>I'm going AFK_AUTO</b>",
                "back": "<b>I'm no longer AFK_AUTO</b>",
-               "afk": "<b>Automatische Antwort:\nIch bin ist seit {} nicht mehr zu erreichen.\nGrund:\n<i>Ich fahre gerade Auto. Deine Nachricht wird mir aber vorgelesen.</i> </b>"}
+               "afk": "<b>Automatische Antwort:</b>\nIch bin ist seit {} nicht mehr zu erreichen.\nGrund:\n<i>Ich fahre gerade Auto. Deine Nachricht wird mir aber vorgelesen.</i>\n\n<b>Automatic reply:</b>\nI have been unreachable since {}.\nReason:\n<i>I'm driving right now. But your message will be read to me.</i>"}
 
     async def client_ready(self, client, db):
         self._db = db
         self._me = await client.get_me()
 
     async def afk_autocmd(self, message):
-        """.afk [message]"""
+        """.afk [message]"""
+
         self._db.set(__name__, "afk", True)
-        self._db.set(__name__, "gone", time.time())
+        self._db.set(__name__, "gone", time.time())
+
         await self.allmodules.log("afk", data=utils.get_args_raw(message) or None)
         await utils.answer(message, self.strings("gone", message))
 
@@ -62,10 +64,7 @@ class AFKMod(loader.Module):
             now = datetime.datetime.now().replace(microsecond=0)
             gone = datetime.datetime.fromtimestamp(self._db.get(__name__, "gone")).replace(microsecond=0)
             diff = now - gone
-            if afk_state is True:
-                ret = self.strings("afk", message).format(diff)
-            elif afk_state is not False:
-                ret = self.strings("afk_reason", message).format(diff, afk_state)
+            ret = self.strings("afk", message).format(diff, diff) 
             await utils.answer(message, ret)
 
     def get_afk(self):
