@@ -29,7 +29,11 @@ class AFKMod(loader.Module):
     strings = {"name": "AFK_AUTO",
                "gone": "<b>I'm going AFK_AUTO</b>",
                "back": "<b>I'm no longer AFK_AUTO</b>",
-               "afk": "<b>Automatische Antwort:</b>\nIch bin ist seit {} nicht mehr zu erreichen.\nGrund:\n<i>Ich fahre gerade Auto. Deine Nachricht wird mir aber vorgelesen.</i>\n\n<b>Automatic reply:</b>\nI have been unreachable since {}.\nReason:\n<i>I'm driving right now. But your message will be read to me.</i>"}
+               "afk": "<b>Automatische Antwort:</b>\nIch bin ist seit {} nicht "
+               "mehr zu erreichen.\nGrund:\n<i>Ich fahre gerade Auto. Deine "
+               "Nachricht wird mir aber vorgelesen.</i>\n\n<b>Automatic reply:"
+               "</b>\nI have been unreachable since {}.\nReason:\n<i>I'm driving "
+               "right now. But your message will be read to me.</i>"}
 
     async def client_ready(self, client, db):
         self._db = db
@@ -53,7 +57,7 @@ class AFKMod(loader.Module):
 
     async def watcher(self, message):
         if message.mentioned or getattr(message.to_id, "user_id", None) == self._me.id:
-            afk_state = self.get_afk()
+            afk_state = self._db.get(__name__, "afk", False)
             if not afk_state:
                 return
             logger.debug("tagged!")
@@ -64,8 +68,5 @@ class AFKMod(loader.Module):
             now = datetime.datetime.now().replace(microsecond=0)
             gone = datetime.datetime.fromtimestamp(self._db.get(__name__, "gone")).replace(microsecond=0)
             diff = now - gone
-            ret = self.strings("afk", message).format(diff, diff) 
+            ret = self.strings("afk", message).format(diff, diff)
             await utils.answer(message, ret)
-
-    def get_afk(self):
-        return self._db.get(__name__, "afk", False)
