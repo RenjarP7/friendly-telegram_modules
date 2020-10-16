@@ -39,7 +39,7 @@ class AFKAutoMod(loader.Module):
         self._db = db
         self._me = await client.get_me()
 
-    async def afkautocmd(self, message):
+    async def afk_autocmd(self, message):
         """.afk [message]"""
 
         self._db.set(__name__, "afk", True)
@@ -48,7 +48,7 @@ class AFKAutoMod(loader.Module):
         await self.allmodules.log("afk", data=utils.get_args_raw(message) or None)
         await utils.answer(message, self.strings("gone", message))
 
-    async def unafkautocmd(self, message):
+    async def unafk_autocmd(self, message):
         """Remove the AFK status"""
         self._db.set(__name__, "afk", False)
         self._db.set(__name__, "gone", None)
