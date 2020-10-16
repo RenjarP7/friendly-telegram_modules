@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 @loader.tds
-class AFKMod(loader.Module):
+class AFKAutoMod(loader.Module):
     """Provides a message saying that you are unavailable"""
     strings = {"name": "AFK_AUTO",
                "gone": "<b>I'm going AFK_AUTO</b>",
@@ -39,7 +39,7 @@ class AFKMod(loader.Module):
         self._db = db
         self._me = await client.get_me()
 
-    async def afk_autocmd(self, message):
+    async def afkautocmd(self, message):
         """.afk [message]"""
 
         self._db.set(__name__, "afk", True)
@@ -48,7 +48,7 @@ class AFKMod(loader.Module):
         await self.allmodules.log("afk", data=utils.get_args_raw(message) or None)
         await utils.answer(message, self.strings("gone", message))
 
-    async def unafk_autocmd(self, message):
+    async def unafkautocmd(self, message):
         """Remove the AFK status"""
         self._db.set(__name__, "afk", False)
         self._db.set(__name__, "gone", None)
