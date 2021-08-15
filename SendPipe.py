@@ -84,10 +84,10 @@ If empty, every ID is allowed"""
 
     async def sendcmd(self, message):
         """.send <id> <message>\ne.g. .send @user Hello World!"""
-        if self._db.get(__name__, "sendpipe_botid", False) == "":
+        if self._db.get(__name__, "sendpipe_botid", "") == "":
             await utils.answer(message, self.strings("need_id_msg", message))
             return
-        if message.from_id == self._db.get(__name__, "sendpipe_botid", False) or self._db.get(__name__, "sendpipe_botid", False) == "":
+        if message.from_id == self._db.get(__name__, "sendpipe_botid", False) or self._db.get(__name__, "sendpipe_botid", "") == "":
             args = utils.get_args(message)
             if len(args) == 0:
                 await utils.answer(message, self.strings("need_id_msg", message))
@@ -98,3 +98,5 @@ If empty, every ID is allowed"""
             await message.client.send_message(args[0],
                                                 message.message.split(" ".join(args[0:1]))[1], 
                                                 file=message.media if message.media else None)
+            if self._db.get(__name__, "deleteBotMsg", False):
+                await message.client.delete_messages(message.to_id, message.id)
