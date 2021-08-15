@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 @loader.tds
 class SendPipeMod(loader.Module):
     """Sends a message to a Telegram account."""
-    strings = {"name": "SendMsg",
+    strings = {"name": "SendPipeMsg",
                "need_id_msg": "<b>Need Chat ID / Phone number and Message."
                "</b>",
                "need_msg": "<b>Need Message.</b>",
